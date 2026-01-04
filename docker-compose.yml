@@ -1,0 +1,93 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: trademind-postgres
+    restart: unless-stopped  # Auto-restart on failure
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: trademind
+    ports:
+      - "5435:5432"  # 5432-5434 are in use, using 5435
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: trademind-redis
+    restart: unless-stopped  # Auto-restart on failure
+    ports:
+      - "6382:6379"  # 6379-6381 are in use, using 6382
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trademind-backend
+    restart: unless-stopped
+    ports:
+      - "5000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/trademind
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+      - /app/.venv
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn src.app.main:app --host 0.0.0.0 --port 8000 --log-level info --access-log
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trademind-worker
+    restart: unless-stopped
+    environment:
+      - CELERY_WORKER=true
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/trademind
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+      - /app/.venv
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    command: sh -c "celery -A app.workers.celery_app worker --loglevel=info --concurrency=2 & celery -A app.workers.celery_app beat --loglevel=info & wait"
+
+volumes:
+  postgres_data:
+  redis_data:
+

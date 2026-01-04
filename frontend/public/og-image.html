@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TradeMind OG Image Generator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1200px;
+      height: 630px;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .bg-pattern {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(59, 130, 246, 0.1) 10px, rgba(59, 130, 246, 0.1) 20px);
+    }
+    .content {
+      z-index: 1;
+      text-align: center;
+      padding: 60px;
+    }
+    .logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 40px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(59, 130, 246, 0.4);
+    }
+    .logo svg {
+      width: 70px;
+      height: 70px;
+    }
+    h1 {
+      font-size: 72px;
+      font-weight: 800;
+      margin: 0 0 20px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      font-size: 32px;
+      color: #9ca3af;
+      margin: 0 0 40px;
+      font-weight: 500;
+    }
+    .badge {
+      display: inline-block;
+      padding: 12px 24px;
+      background: rgba(251, 191, 36, 0.2);
+      border: 2px solid rgba(251, 191, 36, 0.3);
+      border-radius: 50px;
+      color: #fbbf24;
+      font-size: 18px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+  <div class="content">
+    <div class="logo">
+      <svg viewBox="0 0 100 100" fill="white">
+        <path d="M30 30 L50 20 L70 30 L70 50 L50 60 L30 50 Z" opacity="0.9"/>
+        <circle cx="50" cy="40" r="8" fill="white"/>
+        <path d="M45 50 L50 55 L55 50" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1>TradeMind</h1>
+    <div class="subtitle">AI-Powered Autonomous Bitcoin Trading Platform</div>
+    <div class="badge">📁 Portfolio Project</div>
+  </div>
+</body>
+</html>
+
