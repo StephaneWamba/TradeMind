@@ -1,0 +1,18 @@
+[phases.setup]
+nixPkgs = ["python312", "postgresql_16"]
+
+[phases.install]
+cmds = [
+  "pip install --upgrade pip",
+  "pip install uv",
+  "cd backend && uv pip install --system -e ."
+]
+
+[phases.build]
+cmds = [
+  "cd backend && alembic upgrade head || true"
+]
+
+[start]
+cmd = "cd backend && uvicorn src.app.main:app --host 0.0.0.0 --port $PORT"
+

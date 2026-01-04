@@ -45,5 +45,6 @@ USER appuser
 EXPOSE 8000
 
 # Run application
+# Railway provides PORT env var via startCommand in railway.toml
 CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 

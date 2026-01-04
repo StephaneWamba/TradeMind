@@ -32,6 +32,8 @@ class Settings(BaseSettings):
         "http://localhost:3001",
         "http://localhost:3002",
         "http://localhost:8000",
+        "https://*.vercel.app",
+        "https://*.railway.app",
     ]
 
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@postgres:5432/trademind"
@@ -64,7 +66,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
 
     RESEND_API_KEY: Optional[str] = None
-    ALERT_EMAIL_RECEIVER: str = "wambstephane@gmail.com"
+    ALERT_EMAIL_RECEIVER: str = ""
     ALERT_EMAIL_SENDER: str = "onboarding@resend.dev"
 
     model_config = SettingsConfigDict(

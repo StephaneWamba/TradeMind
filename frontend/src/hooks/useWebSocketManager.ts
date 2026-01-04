@@ -45,7 +45,11 @@ class SharedWebSocketManager implements WebSocketManager {
       this.reconnectTimeouts.delete(connectionId)
     }
 
-    const wsUrl = `ws://localhost:5000/api/v1/ws?connection_id=${connectionId}`
+    // Use environment variable for WebSocket URL, fallback to localhost
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+    const wsProtocol = apiUrl.startsWith('https') ? 'wss' : 'ws'
+    const wsHost = apiUrl.replace(/^https?:\/\//, '').replace(/\/api\/v1$/, '')
+    const wsUrl = `${wsProtocol}://${wsHost}/api/v1/ws?connection_id=${connectionId}`
     const ws = new WebSocket(wsUrl)
 
     ws.onopen = () => {
