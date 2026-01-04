@@ -119,11 +119,11 @@ API Docs: http://localhost:5000/docs
 
 ## Documentation
 
-- [Setup Guide](SETUP.md) - Installation and configuration
-- [Architecture](ARCHITECTURE.md) - System design and structure
-- [API Reference](API.md) - Endpoint documentation
-- [Trading Guide](TRADING.md) - How trading works
-- [Development](DEVELOPMENT.md) - Developer guide
+- [Setup Guide](docs/SETUP.md) - Installation and configuration
+- [Architecture](docs/ARCHITECTURE.md) - System design and structure
+- [API Reference](docs/API.md) - Endpoint documentation
+- [Trading Guide](docs/TRADING.md) - How trading works
+- [Development](docs/DEVELOPMENT.md) - Developer guide
 
 ## Tech Stack
 
@@ -161,3 +161,4 @@ TradeMind/
 ## License
 
 Proprietary
+
