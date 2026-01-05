@@ -18,7 +18,7 @@ class SharedWebSocketManager implements WebSocketManager {
   private connections: Map<number, WebSocket> = new Map()
   private messageHandlers: Map<number, Map<string, Set<(message: WebSocketMessage) => void>>> = new Map()
   private subscribedChannels: Map<number, Set<string>> = new Map()
-  private reconnectTimeouts: Map<number, NodeJS.Timeout> = new Map()
+  private reconnectTimeouts: Map<number, ReturnType<typeof setTimeout>> = new Map()
   private autoReconnect: boolean = true
   private reconnectInterval: number = 10000 // 10 seconds (increased to reduce connection storms)
 

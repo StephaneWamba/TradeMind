@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/utils'
 import { llmLogsApi } from '@/lib/api'
 import { format } from 'date-fns'
-import { Brain, TrendingUp, TrendingDown, AlertCircle, CheckCircle, XCircle } from 'lucide-react'
+import { Brain, AlertCircle, CheckCircle, XCircle } from 'lucide-react'
 
 interface LLMLog {
   id: number

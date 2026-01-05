@@ -3,11 +3,13 @@
 ## Prerequisites
 
 1. Install Railway CLI:
+
 ```bash
 npm i -g @railway/cli
 ```
 
 2. Login to Railway:
+
 ```bash
 railway login
 ```
@@ -132,4 +134,3 @@ Migrations run automatically on startup (see Dockerfile). To run manually:
 ```bash
 railway run alembic upgrade head
 ```
-

@@ -11,7 +11,7 @@ export default function Portfolio() {
   const [manualConnectionId, setManualConnectionId] = useState<string>('6')
   const [loading, setLoading] = useState(true)
   const [connections, setConnections] = useState<any[]>([])
-  const [showManualInput, setShowManualInput] = useState(false)
+  const [_showManualInput, setShowManualInput] = useState(false)
 
   useEffect(() => {
     // Set default connection immediately to prevent infinite loading

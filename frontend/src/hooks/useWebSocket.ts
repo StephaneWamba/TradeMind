@@ -23,11 +23,10 @@ export interface UseWebSocketOptions {
  * Multiple components can use this hook with the same connection_id and they'll share the connection.
  */
 export function useWebSocket(options: UseWebSocketOptions) {
-  const { connectionId, channels = [], autoReconnect = true, reconnectInterval = 5000 } = options
+  const { connectionId, channels = [] } = options
   
   const [isConnected, setIsConnected] = useState(false)
   const [lastMessage, setLastMessage] = useState<WebSocketMessage | null>(null)
-  const [error, setError] = useState<Error | null>(null)
   
   const cleanupRef = useRef<(() => void)[]>([])
 
@@ -95,7 +94,6 @@ export function useWebSocket(options: UseWebSocketOptions) {
   return {
     isConnected,
     lastMessage,
-    error,
     subscribe,
     unsubscribe,
     onMessage,

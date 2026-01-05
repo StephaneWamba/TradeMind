@@ -83,7 +83,6 @@ export default function PriceChart({ connectionId, symbol = 'BTC/USDT' }: PriceC
         borderColor: '#1a1e2a',
         timeVisible: true,
         secondsVisible: false,
-        textColor: '#94a3b8',
       },
     })
 

@@ -5,9 +5,9 @@ import { metricsApi, exchangeApi } from '@/lib/api'
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/utils'
 import { 
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, 
-  BarChart, Bar, LineChart, Line, CartesianGrid, Legend 
+  BarChart, Bar, CartesianGrid
 } from 'recharts'
-import { TrendingUp, TrendingDown, Activity, AlertTriangle, DollarSign } from 'lucide-react'
+import { Activity, AlertTriangle, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
 
 // Custom tooltip for charts
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -31,7 +31,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 }
 
 export default function Analytics() {
-  const [connectionId, setConnectionId] = useState<number | null>(null)
+  const [_connectionId, setConnectionId] = useState<number | null>(null)
   const [overview, setOverview] = useState<any>(null)
   const [performance, setPerformance] = useState<any>(null)
   const [risk, setRisk] = useState<any>(null)
@@ -348,11 +348,8 @@ export default function Analytics() {
                     <Bar 
                       dataKey="pnl" 
                       radius={[6, 6, 0, 0]}
-                    >
-                      {performance.daily_returns.map((entry: any, index: number) => (
-                        <Bar key={index} fill={entry.pnl >= 0 ? '#00d4aa' : '#ff4757'} />
-                      ))}
-                    </Bar>
+                      fill="#00d4aa"
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
