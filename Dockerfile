@@ -37,6 +37,10 @@ COPY backend/ .
 # Set PYTHONPATH so app module can be found
 ENV PYTHONPATH=/app/src
 
+# Copy startup script
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 # Create non-root user
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
@@ -45,7 +49,5 @@ USER appuser
 EXPOSE 8000
 
 # Run application
-# Railway provides PORT env var, but we use startCommand in railway.toml
-# This CMD is a fallback
-CMD ["sh", "-c", "alembic upgrade head || true && uvicorn src.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["/app/start.sh"]
 
