@@ -6,8 +6,8 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://backend-production-8de5.up.railway.app/api/:path*"
+      "source": "/api/(.*)",
+      "destination": "https://backend-production-8de5.up.railway.app/api/$1"
     },
     {
       "source": "/(.*)",
