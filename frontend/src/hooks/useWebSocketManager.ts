@@ -45,8 +45,10 @@ class SharedWebSocketManager implements WebSocketManager {
       this.reconnectTimeouts.delete(connectionId)
     }
 
-    // Use environment variable for WebSocket URL, fallback to localhost
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+    // Use environment variable for WebSocket URL, fallback based on environment
+    // WebSockets need the full backend URL (can't use Vercel rewrites)
+    const apiUrl = import.meta.env.VITE_API_URL || 
+      (import.meta.env.PROD ? 'https://backend-production-8de5.up.railway.app' : 'http://localhost:5000')
     const wsProtocol = apiUrl.startsWith('https') ? 'wss' : 'ws'
     const wsHost = apiUrl.replace(/^https?:\/\//, '').replace(/\/api\/v1$/, '')
     const wsUrl = `${wsProtocol}://${wsHost}/api/v1/ws?connection_id=${connectionId}`
