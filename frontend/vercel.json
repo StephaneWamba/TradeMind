@@ -8,6 +8,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://backend-production-8de5.up.railway.app/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "env": {
