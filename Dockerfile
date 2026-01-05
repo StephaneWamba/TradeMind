@@ -34,11 +34,13 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Copy application code from backend directory
 COPY backend/ .
 
+# Copy startup script from root
+COPY start.sh /app/start.sh
+
 # Set PYTHONPATH so app module can be found
 ENV PYTHONPATH=/app/src
 
-# Copy startup script
-COPY start.sh /app/start.sh
+# Make startup script executable
 RUN chmod +x /app/start.sh
 
 # Create non-root user
