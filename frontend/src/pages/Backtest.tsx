@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { backtestApi } from '@/lib/api'
+import { backtestApi, strategyApi } from '@/lib/api'
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/utils'
 import { TrendingUp, TrendingDown, Clock } from 'lucide-react'
 
 export default function Backtest() {
-  const [strategyId, setStrategyId] = useState(1)
+  const [strategyId, setStrategyId] = useState<number | null>(null)
+  const [strategies, setStrategies] = useState<any[]>([])
   const [connectionId, setConnectionId] = useState(6)
   const [symbol, setSymbol] = useState('BTC/USDT')
   const [days, setDays] = useState(30)
@@ -19,6 +20,26 @@ export default function Backtest() {
   const [status, setStatus] = useState<string>('idle') // idle, pending, running, completed, failed
   const [backtestHistory, setBacktestHistory] = useState<any[]>([])
   const [selectedBacktest, setSelectedBacktest] = useState<number | null>(null)
+
+  // Load strategies on mount
+  useEffect(() => {
+    const loadStrategies = async () => {
+      try {
+        const strategiesData = await strategyApi.list()
+        const strategiesList = strategiesData.strategies || []
+        setStrategies(strategiesList)
+        if (strategiesList.length > 0) {
+          setStrategyId(strategiesList[0].id)
+        } else {
+          setError('No strategies found. Please create a strategy first.')
+        }
+      } catch (err: any) {
+        console.error('Error loading strategies:', err)
+        setError('Failed to load strategies. Please create a strategy first.')
+      }
+    }
+    loadStrategies()
+  }, [])
 
   // Load backtest history on mount
   useEffect(() => {
@@ -275,14 +296,25 @@ export default function Backtest() {
           <CardContent className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">
-                Strategy ID
+                Strategy
               </label>
-              <input
-                type="number"
-                value={strategyId}
-                onChange={(e) => setStrategyId(Number(e.target.value))}
-                className="w-full px-3 py-2 bg-bg-card border border-border-default rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary"
-              />
+              {strategies.length > 0 ? (
+                <select
+                  value={strategyId || ''}
+                  onChange={(e) => setStrategyId(Number(e.target.value))}
+                  className="w-full px-3 py-2 bg-bg-card border border-border-default rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary"
+                >
+                  {strategies.map((strategy: any) => (
+                    <option key={strategy.id} value={strategy.id}>
+                      {strategy.name} (ID: {strategy.id})
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <div className="w-full px-3 py-2 bg-bg-card border border-border-default rounded-lg text-text-secondary">
+                  No strategies available. Please create a strategy first.
+                </div>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">
@@ -344,7 +376,7 @@ export default function Backtest() {
             </div>
             <button
               onClick={handleQuickBacktest}
-              disabled={loading || status === 'running' || status === 'pending'}
+              disabled={loading || status === 'running' || status === 'pending' || !strategyId || strategies.length === 0}
               className="w-full px-4 py-2 bg-accent-primary text-white rounded-lg font-medium hover:bg-accent-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {status === 'pending' || status === 'running' 

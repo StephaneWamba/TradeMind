@@ -89,6 +89,11 @@ export const strategyApi = {
     return response.data
   },
   
+  list: async () => {
+    const response = await api.get('/strategy')
+    return response.data
+  },
+  
   getStrategy: async (strategyId: number) => {
     const response = await api.get(`/strategy/${strategyId}`)
     return response.data

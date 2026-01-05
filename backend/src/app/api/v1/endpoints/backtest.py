@@ -39,6 +39,20 @@ async def run_backtest(
         POST /api/v1/backtest/run?strategy_id=1&connection_id=6&symbol=BTC/USDT&start_date=2024-01-01&end_date=2024-01-31&timeframe=1h&initial_balance=10000
     """
     try:
+        from sqlalchemy import select
+        from app.models.strategy import Strategy
+        
+        # Validate strategy exists
+        stmt = select(Strategy).where(Strategy.id == strategy_id)
+        result = await db.execute(stmt)
+        strategy = result.scalar_one_or_none()
+        
+        if not strategy:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Strategy with ID {strategy_id} not found. Please create a strategy first."
+            )
+        
         # Parse dates
         start = datetime.fromisoformat(start_date.replace("Z", "+00:00"))
         end = datetime.fromisoformat(end_date.replace("Z", "+00:00"))
@@ -120,6 +134,20 @@ async def quick_backtest(
         GET /api/v1/backtest/quick?strategy_id=1&connection_id=6&symbol=BTC/USDT&days=30
     """
     try:
+        from sqlalchemy import select
+        from app.models.strategy import Strategy
+        
+        # Validate strategy exists
+        stmt = select(Strategy).where(Strategy.id == strategy_id)
+        result = await db.execute(stmt)
+        strategy = result.scalar_one_or_none()
+        
+        if not strategy:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Strategy with ID {strategy_id} not found. Please create a strategy first."
+            )
+        
         end_date = datetime.now(timezone.utc)
         start_date = end_date - timedelta(days=days)
 
