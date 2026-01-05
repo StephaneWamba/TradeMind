@@ -34,6 +34,7 @@ class Settings(BaseSettings):
         "http://localhost:8000",
         "https://*.vercel.app",
         "https://*.railway.app",
+        "https://frontend-mptf7p3uf-freelancew.vercel.app",
     ]
 
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@postgres:5432/trademind"
