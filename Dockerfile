@@ -45,6 +45,7 @@ USER appuser
 EXPOSE 8000
 
 # Run application
-# Railway provides PORT env var via startCommand in railway.toml
-CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Railway provides PORT env var, but we use startCommand in railway.toml
+# This CMD is a fallback
+CMD ["sh", "-c", "alembic upgrade head || true && uvicorn src.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
 
