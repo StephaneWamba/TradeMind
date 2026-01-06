@@ -160,5 +160,4 @@ TradeMind/
 
 ## License
 
-Proprietary
-
+Free under MIT License
